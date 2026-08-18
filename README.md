@@ -26,7 +26,7 @@ DeepSeek Harness 的**小文件记忆**插件。模型把该记住的东西写�
 ## 安装
 
 ```sh
-dsh plugin --profile web add github:lq2224-collab/dsh-md-memory
+dsh plugin --profile web add github:CuteSamurai24/dsh-md-memory
 ```
 
 然后重启 `dsh web`。
@@ -81,4 +81,4 @@ DSH 官方没有内置长期记忆产品。社区已经有 KV / 自动抽取 / �
 
 ## License
 
-[MIT](LICENSE) © lq2224-collab
+[MIT](LICENSE) © CuteSamurai24
