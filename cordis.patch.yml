@@ -1,0 +1,6 @@
+# Bundle layer for dsh-md-memory.
+# `dsh plugin add` applies this automatically. Do not also insert the same
+# id by hand, or the loader will refuse to start (duplicate entry).
+- insert:
+    - id: md-memory
+      name: dsh-md-memory

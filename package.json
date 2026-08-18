@@ -1,0 +1,42 @@
+{
+  "name": "dsh-md-memory",
+  "version": "0.1.0",
+  "description": "Small DeepSeek Harness memory plugin: the model writes markdown files under ~/.dsh/memory, the host injects them next session. No auto-extract, no vector DB.",
+  "type": "module",
+  "license": "MIT",
+  "author": "lq2224-collab",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lq2224-collab/dsh-md-memory.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lq2224-collab/dsh-md-memory/issues"
+  },
+  "homepage": "https://github.com/lq2224-collab/dsh-md-memory#readme",
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "memory",
+    "markdown"
+  ],
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  }
+}
