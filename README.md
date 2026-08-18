@@ -1,83 +1,85 @@
 # dsh-md-memory
 
-DeepSeek Harness 的**小文件记忆**插件。模型把该记住的东西写成 `~/.dsh/memory` 里的 markdown，下次开会话由 host 自动塞进上下文。
+English | [简体中文](README.zh.md)
 
-这不是「第二大脑」。社区里已经有更完整的记忆插件（自动抽取、向量检索、设置大盘）。本插件刻意做小：磁盘上就是人能打开的文件，只有模型主动调用 `memory` 才会落盘。
+A **small file memory** plugin for [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness). The model writes what should persist as markdown under `~/.dsh/memory`. Next session, the host injects it.
 
-[DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) · MIT
+This is not a second brain. The community already has fuller memory plugins (auto-extract, vector search, settings dashboards). This one stays small: the disk holds files you can open in a text editor, and nothing is saved unless the model calls `memory`.
 
-## 它做什么
+MIT
 
-- 跨会话记住用户偏好、纠正和可复用教训
-- 三层文件：`user.md`（跨项目） / `agent/MEMORY.md`（热规则） / `agent/topics/*.md`（按需专题）
-- 项目专属事实请写仓库里的 `AGENTS.md`，不要写进这里
-- **子代理不能写**，避免并行任务把记忆写乱
-- 你说「记住 / 以后都 / 别再」这类话时，如果这轮还没写入，host 会提醒模型考虑落盘
+## What it does
 
-## 它不做什么
+- Remembers preferences, corrections, and reusable lessons across sessions
+- Three files: `user.md` (cross-project) / `agent/MEMORY.md` (hot rules) / `agent/topics/*.md` (on-demand topics)
+- Project-only facts belong in the repo `AGENTS.md`, not here
+- **Subagents cannot write**, so parallel tasks cannot scramble memory
+- If you say things like “remember / from now on / don’t ever”, and nothing was stored this turn, the host nudges the model
 
-- 不自动从对话里提炼记忆
-- 不扫描密钥（不要让模型把 token 写进来）
-- 不做向量 / 全文检索引擎（`search` 只是简单子串）
-- 不提供浏览器管理页
+## What it does not do
 
-请勿和同样注册名为 `memory` 的插件一起安装。
+- No automatic extraction from the chat
+- No secret scanning (do not let the model write tokens here)
+- No vector / full-text engine (`search` is a plain substring)
+- No browser settings page
 
-## 安装
+Do not install this next to another plugin that also registers a tool named `memory`.
+
+## Install
 
 ```sh
 dsh plugin --profile web add github:CuteSamurai24/dsh-md-memory
 ```
 
-然后重启 `dsh web`。
+Then restart `dsh web`.
 
-卸载：
+Uninstall:
 
 ```sh
 dsh plugin --profile web remove dsh-md-memory
 ```
 
-记忆文件留在 `~/.dsh/memory`，卸载插件不会删除它们。
+Files stay in `~/.dsh/memory`. Uninstalling the plugin does not delete them.
 
-## 文件在哪
+## Where the files live
 
 ```
 ~/.dsh/memory/
-  user.md              跨项目的你：身份、沟通习惯、长期偏好
-  agent/MEMORY.md      几乎每个会话都该遵守的热规则（保持短）
-  agent/topics/*.md    专题，描述对得上再读
+  user.md              You, across projects: identity, tone, standing preferences
+  agent/MEMORY.md      Hot rules for almost every session (keep this short)
+  agent/topics/*.md    Topics, read when the description matches
 ```
 
-Windows 上就是 `C:\Users\<你>\.dsh\memory\`。用记事本打开即可检查、改、删。
+On Windows that is `C:\Users\<you>\.dsh\memory\`. Open the files in Notepad to check, edit, or delete.
 
-## 模型怎么写
+## How the model writes
 
-一个工具，名字叫 `memory`：
+One tool, named `memory`:
 
-| 操作 | 用途 |
+| Operation | Use |
 | --- | --- |
-| `read` / `search` / `list` | 读 |
-| `append` / `edit` / `write` | 写一层 |
-| `create` / `delete` | 管专题 |
+| `read` / `search` / `list` | Read |
+| `append` / `edit` / `write` | Write a layer |
+| `create` / `delete` | Manage topics |
 
-往 `user` 追加时必须带一句 `reason`：为什么这条在别的项目里也成立。
+Appending to `user` requires a one-sentence `reason`: why this still holds on a different project.
 
-上限：user 8KB，热规则 12KB，单个专题 20KB。长内容请放到 topic。
+Caps: user 8KB, hot rules 12KB, one topic 20KB. Long material goes in a topic.
 
-## 关掉
+## Turn it off
 
-默认开启。在 `~/.dsh/settings.yaml` 里写：
+On by default. In `~/.dsh/settings.yaml`:
 
 ```yaml
 md-memory:
   enabled: false
 ```
 
-改完后新的一轮不再注入、不再提供 `memory` 工具。重启 `dsh web` 最省事。
+Later turns in this process stop injecting and stop offering the tool. Restarting `dsh web` is the simplest way.
 
-## 和别的记忆插件
+## Other memory plugins
 
-DSH 官方没有内置长期记忆产品。社区已经有 KV / 自动抽取 / 人格文件 / 重型「进化」方案。本插件只覆盖其中一条窄需求：**模型写 markdown，人能打开看。**
+DSH has no official long-term memory product. The community already has KV stores, auto-extract, persona files, and heavier “evolve” suites. This plugin only covers one narrow need: **the model writes markdown, a human can open it.**
 
 ## License
 
